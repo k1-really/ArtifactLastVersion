@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: Interview
+
+  datasource:
+    # Используем переменную окружения DB_URL для переопределения в Docker
+    url: ${DB_URL:jdbc:sqlite:database.db}
+    driver-class-name: org.sqlite.JDBC
+    # Настройки пула соединений (оптимизация для SQLite)
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update  # Автоматически создает/обновляет таблицы
+    show-sql: true      # Показывать SQL запросы в логах
+    properties:
+      hibernate:
+        format_sql: true
+        # Настройки для SQLite
+        jdbc:
+          batch_size: 20
+        connection:
+          autocommit: false
+
+# Настройки Maven репозитория и кэширования
+maven:
+  repository:
+    url: ${MAVEN_REPO_URL:https://repo1.maven.org/maven2}
+
+cache:
+  refresh-hours: ${CACHE_REFRESH_HOURS:24}  # Кэш актуален 24 часа
+
+# Настройки логирования
+logging:
+  level:
+    org.example.interview: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /

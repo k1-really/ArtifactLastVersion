@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: maven-artifact-service
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data  # Сохраняем БД между перезапусками
+    environment:
+      # Переопределяем параметры через переменные окружения
+      DB_URL: jdbc:sqlite:/app/data/database.db
+      MAVEN_REPO_URL: https://repo1.maven.org/maven2
+      CACHE_REFRESH_HOURS: 24

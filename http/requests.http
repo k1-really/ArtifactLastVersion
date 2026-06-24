@@ -1,0 +1,137 @@
+### Maven Artifact Info Service - API Tests
+### Базовый URL сервиса
+@baseUrl = http://localhost:8080
+
+### ============================================
+### 1. ТЕСТЫ С СУЩЕСТВУЮЩИМИ АРТЕФАКТАМИ
+### ============================================
+
+### 1.1. Spring Boot Starter Web (популярный артефакт)
+GET {{baseUrl}}/api/artifact/org.springframework.boot/spring-boot-starter-web
+Accept: application/json
+
+### 1.2. Google Guava (популярная библиотека)
+GET {{baseUrl}}/api/artifact/com.google.guava/guava
+Accept: application/json
+
+### 1.3. Apache Commons Lang3
+GET {{baseUrl}}/api/artifact/org.apache.commons/commons-lang3
+Accept: application/json
+
+### ============================================
+### 2. ТЕСТЫ С НЕСУЩЕСТВУЮЩИМИ АРТЕФАКТАМИ (ОШИБКИ)
+### ============================================
+
+### 2.1. Несуществующий артефакт (должен вернуть 404)
+GET {{baseUrl}}/api/artifact/com.example/non-existent-artifact
+Accept: application/json
+
+### 2.2. Несуществующий groupId (должен вернуть 404)
+GET {{baseUrl}}/api/artifact/org.nonexistent.group/some-artifact
+Accept: application/json
+
+### ============================================
+### 3. ТЕСТЫ С ВАЛИДАЦИЕЙ ПАРАМЕТРОВ
+### ============================================
+
+### 3.1. Пустой groupId (должен вернуть 400)
+GET {{baseUrl}}/api/artifact//spring-boot-starter-web
+Accept: application/json
+
+### 3.2. Пустой artifactId (должен вернуть 400)
+GET {{baseUrl}}/api/artifact/org.springframework.boot/
+Accept: application/json
+
+### 3.3. Специальные символы в groupId (должны работать)
+GET {{baseUrl}}/api/artifact/com.fasterxml.jackson.core/jackson-databind
+Accept: application/json
+
+### ============================================
+### 4. ТЕСТЫ НА ПРОИЗВОДИТЕЛЬНОСТЬ КЭША
+### ============================================
+
+### 4.1. Первый запрос - загружается из Maven Central (медленно)
+GET {{baseUrl}}/api/artifact/org.apache.maven/maven-core
+Accept: application/json
+
+### 4.2. Второй запрос - должен вернуться из кэша (быстро)
+### Выполните этот запрос сразу после предыдущего
+GET {{baseUrl}}/api/artifact/org.apache.maven/maven-core
+Accept: application/json
+
+### ============================================
+### 5. ТЕСТЫ С РАЗНЫМИ ТИПАМИ АРТЕФАКТОВ
+### ============================================
+
+### 5.1. Артефакт с версией SNAPSHOT (не должен возвращаться, т.к. ищем release)
+GET {{baseUrl}}/api/artifact/org.springframework.boot/spring-boot-starter-parent
+Accept: application/json
+
+### 5.2. Большой артефакт (проверка размера)
+GET {{baseUrl}}/api/artifact/org.apache.tomcat.embed/tomcat-embed-core
+Accept: application/json
+
+### 5.3. Несколько артефактов подряд (тест кэширования)
+GET {{baseUrl}}/api/artifact/org.hibernate.orm/hibernate-core
+Accept: application/json
+
+### ============================================
+### 6. ТЕСТЫ НА РАЗНЫЕ РЕПОЗИТОРИИ (ЕСЛИ НАСТРОЕНЫ)
+### ============================================
+
+### 6.1. Артефакт из центрального репозитория (по умолчанию)
+GET {{baseUrl}}/api/artifact/javax.servlet/javax.servlet-api
+Accept: application/json
+
+### 6.2. Google Gson
+GET {{baseUrl}}/api/artifact/com.google.code.gson/gson
+Accept: application/json
+
+### 6.3. Apache HttpClient
+GET {{baseUrl}}/api/artifact/org.apache.httpcomponents/httpclient
+Accept: application/json
+
+### ============================================
+### 7. ТЕСТЫ НА КОРРЕКТНОСТЬ ОТВЕТА
+### ============================================
+
+### 7.1. Проверка структуры ответа (должен быть JSON с тремя полями)
+GET {{baseUrl}}/api/artifact/org.projectlombok/lombok
+Accept: application/json
+
+### 7.2. Проверка, что sizeBytes - число, а sha256 - строка
+GET {{baseUrl}}/api/artifact/org.mapstruct/mapstruct
+Accept: application/json
+
+### ============================================
+### 8. ТЕСТЫ С ПАРАМЕТРАМИ ОКРУЖЕНИЯ
+### ============================================
+
+### 8.1. Если настроен другой репозиторий (пример для альтернативного репо)
+# GET {{baseUrl}}/api/artifact/com.google.android/android
+# Accept: application/json
+
+### ============================================
+### 9. НАГРУЗОЧНЫЕ ТЕСТЫ (опционально)
+### ============================================
+
+### 9.1. Серия запросов для проверки кэша
+GET {{baseUrl}}/api/artifact/org.springframework/spring-core
+Accept: application/json
+
+### 9.2. Проверка повторного запроса после обновления кэша
+### (подождите CACHE_REFRESH_HOURS часов или измените настройки)
+GET {{baseUrl}}/api/artifact/org.springframework/spring-core
+Accept: application/json
+
+### ============================================
+### 10. ЗАПРОСЫ С РАЗНЫМИ FORMATAMI (если поддерживаются)
+### ============================================
+
+### 10.1. JSON (по умолчанию)
+GET {{baseUrl}}/api/artifact/org.jetbrains/annotations
+Accept: application/json
+
+### 10.2. XML (если добавлен соответствующий маппер)
+# GET {{baseUrl}}/api/artifact/org.jetbrains/annotations
+# Accept: application/xml
