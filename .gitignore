@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# SQLite базы данных
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+
+# Папка с данными (БД, кэш Aether и т.д.)
+/data/

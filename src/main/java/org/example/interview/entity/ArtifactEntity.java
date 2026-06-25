@@ -5,10 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-/**
- * Сущность для хранения информации об артефакте в SQLite
- * Используем JPA аннотации для ORM маппинга
- */
+
 @Entity // Указывает, что это JPA сущность
 @Table(name = "artifacts", // Имя таблицы в БД
         uniqueConstraints = { // Уникальное ограничение - одна запись на пару groupId:artifactId

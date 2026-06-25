@@ -2,11 +2,7 @@ package org.example.interview.dto;
 
 import lombok.*;
 
-/*        - version (строка)
-  - sizeBytes (число, размер файла)
-  - sha256 (строка, хэш-сумма артефакта)*/
-@Setter
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,4 +10,5 @@ public class ArtifactResponse {
     private String version;
     private Long sizeBytes;
     private String sha256;
+    private String hashAlgorithm;   // "SHA256" или "SHA1"
 }

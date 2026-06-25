@@ -50,10 +50,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * REST контроллер для обработки запросов к API
- * Используем @RestController для автоматической сериализации ответов в JSON
- */
 @RestController
 @RequestMapping("/api/artifact")
 @RequiredArgsConstructor
@@ -65,8 +61,6 @@ public class ArtifactController {
     /**
      * GET эндпоинт для получения информации об артефакте
      * Пример запроса: GET /api/artifact/org.springframework.boot/spring-boot-starter-web
-     *
-     * @PathVariable - извлекает значения из URL пути
      */
     @GetMapping("/{groupId}/{artifactId}")
     public ResponseEntity<ArtifactResponse> getArtifactInfo(
@@ -79,7 +73,6 @@ public class ArtifactController {
             ArtifactResponse response = artifactService.getArtifactInfo(groupId, artifactId);
 
             return ResponseEntity.ok(response);
-
         } catch (RuntimeException e) {
             log.error("Error processing request: {}", e.getMessage());
             throw e;

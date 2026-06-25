@@ -26,15 +26,15 @@ spring:
         connection:
           autocommit: false
 
-# Настройки Maven репозитория и кэширования
 maven:
   repository:
     url: ${MAVEN_REPO_URL:https://repo1.maven.org/maven2}
+  local:
+    repository: ${MAVEN_LOCAL_REPO:${java.io.tmpdir}/maven-repo}
 
 cache:
-  refresh-hours: ${CACHE_REFRESH_HOURS:24}  # Кэш актуален 24 часа
+  refresh-hours: ${CACHE_REFRESH_HOURS:24}
 
-# Настройки логирования
 logging:
   level:
     org.example.interview: DEBUG
